@@ -3,60 +3,49 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+
 export async function POST(req: Request) {
   try {
     const { message } = await req.json();
 
-    // 1. Explicitly retrieve and check the API Key inside the function
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey || apiKey.trim() === "") {
-      console.error("API_KEY_ERROR: GEMINI_API_KEY environment variable is not set.");
-      return NextResponse.json(
-        { reply: "I'm here with you 💜 Companion setup error: My voice is currently unavailable due to a configuration issue." },
-        { status: 503 } 
-      );
-    }
-    
-    // Handle empty message
     if (!message || message.trim() === "") {
       return NextResponse.json({
         reply: "I'm here with you 💜 Tell me what's on your mind.",
       });
     }
 
-    // 2. Instantiate genAI and model inside the function scope
-    const genAI = new GoogleGenerativeAI(apiKey);
-    // 3. Use the correct, stable model name
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
     const prompt = `
 You are SoulCare 💜, a warm emotional support companion.
-Respond with empathy, short supportive sentences, no lists.
-Always validate the user's feelings.
-End with one gentle reflective question.
+Speak gently, validate emotions, and always ask one soft follow-up question.
+No lists. No bullet points.
 
-User says: "${message}"
+User: ${message}
 `;
 
-    // Generate response
-    const result = await model.generateContent(prompt);
-    
-    // FIX: Safely access .text, using || "" to ensure it is a string before calling .trim()
-    const reply = (result.response.text || "").trim();
+    // ✅ Correct model + correct call format
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    return NextResponse.json({
-      reply: reply || "I'm here with you 💜 You're not alone.",
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }]
+        }
+      ]
     });
 
-  } catch (err) {
-    console.error("SERVER ERROR:", err);
+    // ✅ Correct .text() usage
+    const reply = result.response.text();
 
-    // Provide a kind message for any unexpected server error
-    return NextResponse.json(
-      {
-        reply: "I'm here with you 💜 Something went wrong, but you're not alone. I'll try to reply better next time.",
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      reply: reply || "I'm still here with you 💜 You're not alone.",
+    });
+
+  } catch (error) {
+    console.error("Gemini API Error →", error);
+    return NextResponse.json({
+      reply: "I'm here with you 💜 Something went wrong.",
+    }, { status: 500 });
   }
 }
