@@ -3,49 +3,54 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-
 export async function POST(req: Request) {
   try {
     const { message } = await req.json();
 
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey || apiKey.trim() === "") {
+      console.error("API_KEY_ERROR: GEMINI_API_KEY environment variable is not set.");
+      return NextResponse.json(
+        { reply: "I'm here with you 💜 Companion setup error: My voice is currently unavailable due to a configuration issue." },
+        { status: 503 } 
+      );
+    }
+    
     if (!message || message.trim() === "") {
       return NextResponse.json({
         reply: "I'm here with you 💜 Tell me what's on your mind.",
       });
     }
 
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
     const prompt = `
 You are SoulCare 💜, a warm emotional support companion.
-Speak gently, validate emotions, and always ask one soft follow-up question.
-No lists. No bullet points.
+Respond with empathy, short supportive sentences, no lists.
+Always validate the user's feelings.
+End with one gentle reflective question.
 
-User: ${message}
+User says: "${message}"
 `;
 
-    // ✅ Correct model + correct call format
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-    const result = await model.generateContent({
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: prompt }]
-        }
-      ]
-    });
-
-    // ✅ Correct .text() usage
-    const reply = result.response.text();
+    const result = await model.generateContent(prompt);
+    
+    // This line fixes the Type Error:
+    const reply = (result.response.text || "").trim();
 
     return NextResponse.json({
-      reply: reply || "I'm still here with you 💜 You're not alone.",
+      reply: reply || "I'm here with you 💜 You're not alone.",
     });
 
-  } catch (error) {
-    console.error("Gemini API Error →", error);
-    return NextResponse.json({
-      reply: "I'm here with you 💜 Something went wrong.",
-    }, { status: 500 });
+  } catch (err) {
+    console.error("SERVER ERROR:", err);
+
+    return NextResponse.json(
+      {
+        reply: "I'm here with you 💜 Something went wrong, but you're not alone. I'll try to reply better next time.",
+      },
+      { status: 500 }
+    );
   }
 }
