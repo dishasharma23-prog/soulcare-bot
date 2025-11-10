@@ -24,9 +24,9 @@ export async function POST(req: Request) {
       });
     }
 
-    // 2. Instantiate genAI and model inside the function scope (Fixes undefined error)
+    // 2. Instantiate genAI and model inside the function scope
     const genAI = new GoogleGenerativeAI(apiKey);
-    // 3. Use the correct, stable model name (Fixes 404 Not Found error)
+    // 3. Use the correct, stable model name
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
@@ -40,7 +40,9 @@ User says: "${message}"
 
     // Generate response
     const result = await model.generateContent(prompt);
-    const reply = result.response.text?.trim();
+    
+    // FIX: Safely access .text, using || "" to ensure it is a string before calling .trim()
+    const reply = (result.response.text || "").trim();
 
     return NextResponse.json({
       reply: reply || "I'm here with you 💜 You're not alone.",
@@ -58,4 +60,3 @@ User says: "${message}"
     );
   }
 }
-
