@@ -1,5 +1,5 @@
 // app/api/chat/route.ts
-import "dotenv/config";
+
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
