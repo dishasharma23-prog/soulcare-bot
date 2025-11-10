@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -15,9 +17,8 @@ export async function POST(req: Request) {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
-You are SoulCare 💜, a warm emotional support companion.
-Your job is to validate emotions, comfort gently, and ask one open follow-up question.
-Be soft, supportive, and human — never formal or clinical.
+You are SoulCare 💜, a comforting emotional support companion.
+You respond with empathy, warmth, and one gentle open-ended question.
 
 User: "${message}"
 `;
@@ -25,12 +26,10 @@ User: "${message}"
     const result = await model.generateContent(prompt);
     const reply = result.response.text();
 
-    return NextResponse.json({
-      reply: reply || "I'm here with you 💜 You're not alone.",
-    });
+    return NextResponse.json({ reply });
 
   } catch (error) {
-    console.error("Gemini API Error →", error);
+    console.error("API ERROR:", error);
     return NextResponse.json(
       { reply: "I'm here with you 💜 Something went wrong, but you're not alone." },
       { status: 500 }
