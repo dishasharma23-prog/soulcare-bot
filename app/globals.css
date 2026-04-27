@@ -667,3 +667,61 @@ a:hover, button:hover {
 .nav-active .nav-label { color: #6a0dad !important; font-weight: 700; }
 .nav-active { background: rgba(138,68,173,0.1) !important; }
 .chat-page { padding-bottom: 80px !important; }
+
+.journal-header { margin-bottom: 20px; }
+.mood-select-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.mood-pill { padding: 6px 14px; border-radius: 20px; border: 2px solid rgba(180,130,255,0.3); background: white; color: #6a0dad; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+.mood-pill-active { background: linear-gradient(135deg, #8e44ad, #6a0dad); color: white; border-color: #6a0dad; }
+.mood-pill:hover { transform: translateY(-2px); box-shadow: none; }
+.journal-textarea { width: 100%; border: 2px solid rgba(180,130,255,0.25); border-radius: 14px; padding: 12px; font-size: 0.92rem; color: #3d1460; resize: none; outline: none; font-family: inherit; box-sizing: border-box; background: rgba(255,255,255,0.8); }
+.journal-textarea:focus { border-color: #9b59b6; }
+.journal-save-btn { margin-top: 12px; width: 100%; padding: 13px; background: linear-gradient(135deg, #8e44ad, #6a0dad); color: white; border: none; border-radius: 14px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+.journal-save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(138,68,173,0.35); }
+.journal-entries-title { font-size: 1rem; font-weight: 700; color: #3d1460; margin: 16px 0 10px; }
+.journal-empty { text-align: center; color: #9b7ab8; padding: 20px; font-size: 0.9rem; }
+.journal-entry-card { background: rgba(255,255,255,0.75); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid rgba(180,130,255,0.15); box-shadow: 0 2px 10px rgba(138,68,173,0.06); }
+.journal-entry-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.journal-entry-date { font-size: 0.78rem; color: #9b7ab8; }
+.journal-entry-mood { font-size: 0.82rem; font-weight: 600; color: #6a0dad; margin-top: 2px; }
+.journal-delete-btn { background: rgba(255,100,100,0.1); border: none; color: #ff6b6b; border-radius: 50%; width: 26px; height: 26px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+.journal-delete-btn:hover { background: rgba(255,100,100,0.2); transform: none; box-shadow: none; }
+.journal-entry-text { font-size: 0.9rem; color: #3d1460; line-height: 1.6; }
+
+.breath-card { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.breath-label { font-size: 1.2rem; font-weight: 700; color: #5a0b9e; }
+.breath-svg { filter: drop-shadow(0 4px 14px rgba(138,68,173,0.2)); }
+.breath-btn { padding: 14px 48px; background: linear-gradient(135deg, #8e44ad, #6a0dad); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(138,68,173,0.35); transition: all 0.2s ease; }
+.breath-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(138,68,173,0.45); }
+.breath-btn-stop { background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 4px 18px rgba(231,76,60,0.35); }
+.breath-cycles { font-size: 0.85rem; color: #9b7ab8; }
+.breath-steps { display: flex; flex-direction: column; gap: 10px; }
+.breath-step { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; color: #3d1460; }
+.breath-step-num { background: linear-gradient(135deg, #8e44ad, #6a0dad); color: white; border-radius: 10px; padding: 4px 10px; font-weight: 700; font-size: 0.85rem; min-width: 36px; text-align: center; }
+
+.trends-legend { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: #9b7ab8; margin-bottom: 12px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.trends-chart { overflow: visible; }
+.trends-labels { display: flex; justify-content: space-between; margin-top: 6px; padding: 0 20px; }
+.trends-day-label { font-size: 0.68rem; color: #9b7ab8; font-weight: 500; }
+.trends-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.trends-day { font-size: 0.78rem; font-weight: 600; color: #6a0dad; width: 30px; flex-shrink: 0; }
+.trends-bars { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.trends-bar-wrap { display: flex; align-items: center; gap: 6px; }
+.trends-bar { height: 8px; border-radius: 4px; min-width: 4px; transition: width 0.5s ease; }
+.trends-bar-label { font-size: 0.68rem; color: #9b7ab8; white-space: nowrap; }
+
+.profile-card { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.profile-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(180,130,255,0.4); box-shadow: 0 4px 18px rgba(138,68,173,0.2); }
+.profile-name { font-size: 1.2rem; font-weight: 800; color: #3d1460; }
+.profile-name-row { display: flex; align-items: center; gap: 10px; }
+.profile-edit-btn { font-size: 0.78rem; color: #9b59b6; background: rgba(180,130,255,0.15); border: none; border-radius: 8px; padding: 4px 10px; cursor: pointer; }
+.profile-edit-btn:hover { background: rgba(180,130,255,0.25); box-shadow: none; transform: none; }
+.profile-tagline { font-size: 0.82rem; color: #9b7ab8; }
+.profile-edit-row { display: flex; gap: 8px; align-items: center; }
+.profile-name-input { border: 2px solid rgba(180,130,255,0.3); border-radius: 10px; padding: 8px 12px; font-size: 0.95rem; color: #3d1460; outline: none; }
+.profile-save-btn { background: linear-gradient(135deg, #8e44ad, #6a0dad); color: white; border: none; border-radius: 10px; padding: 8px 16px; font-weight: 700; cursor: pointer; }
+.profile-settings { display: flex; flex-direction: column; gap: 0; }
+.profile-setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(180,130,255,0.1); font-size: 0.88rem; color: #3d1460; }
+.profile-setting-value { color: #9b7ab8; font-size: 0.8rem; text-align: right; max-width: 55%; }
+.profile-clear-btn { width: 100%; padding: 12px; background: rgba(255,100,100,0.1); color: #e74c3c; border: 2px solid rgba(255,100,100,0.2); border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; }
+.profile-clear-btn:hover { background: rgba(255,100,100,0.2); box-shadow: none; transform: translateY(-2px); }

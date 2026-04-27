@@ -1,9 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
 const NAV_ITEMS = [
-  { icon: "Home", label: "Home", path: "/dashboard", key: "home" },
-  { icon: "Chat", label: "Chat", path: "/chatbot", key: "chat" },
-  { icon: "Insights", label: "Insights", path: "/chatbot/insights", key: "insights" },
+  { icon: "🏠", label: "Home", path: "/dashboard", key: "home" },
+  { icon: "💬", label: "Chat", path: "/chatbot", key: "chat" },
+  { icon: "📓", label: "Journal", path: "/journal", key: "journal" },
+  { icon: "📊", label: "Trends", path: "/trends", key: "trends" },
+  { icon: "🧘", label: "Breathe", path: "/breathing", key: "breathing" },
 ];
 export default function BottomNav({ active }: { active: string }) {
   const router = useRouter();
