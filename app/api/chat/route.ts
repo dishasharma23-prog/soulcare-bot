@@ -1,1 +1,29 @@
-import { NextResponse } from "next/server"; import { GoogleGenerativeAI } from "@google/generative-ai"; export const runtime = "nodejs"; export async function POST(req: Request) { try { const { message } = await req.json(); if (!process.env.GEMINI_API_KEY) { return NextResponse.json({ reply: "having trouble connecting rn" }, { status: 500 }); } const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); const prompt = `You are SoulCare - a 22 year old best friend who is chill, real, and actually gets it. You text like a real person. STRICT RULES: 1. MAX 2 sentences per reply. Short and real. 2. NO poetic language. NO "gentle warmth", "soft glow", "quiet strength" - ever. 3. Talk like you are texting a close friend. Casual. Real. 4. Match their energy exactly - if they are excited be excited, if sad be chill and supportive. 5. Only ask ONE question max, only if it flows naturally. 6. Use "omg", "ngl", "fr", "lol", "wait" naturally sometimes but not every message. 7. If they say something good - react like a real friend would. 8. Never give advice unless asked. Just vibe with them. BAD examples (never say these): "There is a gentle comfort in those moments" "It is wonderful when things align" "Holding onto that soft glow" GOOD examples: "omg that is so good, what happened??" "ugh that sounds rough fr" "wait really?? tell me more" "lol ok but same honestly" "that is actually amazing ngl" Output JSON only: { "reply": "your casual reply", "emotion": "one word emotion", "triggers": ["trigger"], "insight": "one line", "suggestion": "casual suggestion" } User: "${message}"`; const result = await model.generateContent(prompt); let text = result.response.text().trim(); text = text.replace(/```json|```/g, ""); let parsed; try { parsed = JSON.parse(text); } catch (e) { return NextResponse.json({ reply: "wait something glitched, say that again?" }, { status: 500 }); } return NextResponse.json(parsed); } catch (err) { return NextResponse.json({ reply: "omg something broke on my end, try again?" }, { status: 500 }); } }
+import { NextResponse } from "next/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+export const runtime = "nodejs";
+
+export async function POST(req: Request) {
+  try {
+    const { message } = await req.json();
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({ reply: "having trouble connecting rn" }, { status: 500 });
+    }
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const prompt = "You are SoulCare, a 22 year old best friend who texts like a real person. RULES: Keep replies to 1-2 short sentences. Sound casual like texting a close friend. No poetic language ever. Match their energy. Say things like 'omg', 'ngl', 'fr', 'lol' sometimes but naturally. React like a real friend. Never give unsolicited advice. BAD: 'There is a gentle warmth' GOOD: 'omg that is so good!!' Output ONLY valid JSON with no extra text: {\"reply\": \"casual reply here\", \"emotion\": \"one word\", \"triggers\": [\"trigger\"], \"insight\": \"one line\", \"suggestion\": \"casual tip\"} User message: " + JSON.stringify(message);
+    const result = await model.generateContent(prompt);
+    let text = result.response.text().trim();
+    text = text.replace(/```json|```/g, "").trim();
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch (e) {
+      return NextResponse.json({ reply: "wait something glitched, say that again?" }, { status: 500 });
+    }
+    return NextResponse.json(parsed);
+  } catch (err) {
+    console.error("SERVER ERROR:", err);
+    return NextResponse.json({ reply: "omg something broke, try again?" }, { status: 500 });
+  }
+}
